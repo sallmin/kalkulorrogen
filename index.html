@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Kalkulimi i rroges nga bruto ne neto me ligjet e Kosoves">
+<meta name="keywords" content="kalkulo rrogen, kalkulo pagen, neto, bruto, Kosove">
+<meta name="author" content="sallm.in">
+<title>Kalkulo Rrogen Bruto - Neto</title>
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16x16.png">
+<link rel="manifest" href="assets/img/favicon/site.webmanifest">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="assets/css/main.css" rel="stylesheet">
+<!-- Google Analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-60259703-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-60259703-8');
+</script>
+</head>
+
+<body>
+  <div class="mainDiv" id="root">
+    <div class="container">
+      <div class="row">
+        <form action="calculate.php" method="post">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="secondsCount"><h1>Shëno rrogën bruto:*</h1></label><br>
+              <input type="number" min="0" v-model="bruto" @click="calculate()" @keyup="calculate()" class="form-control input-lg" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <span class="textColor"><h1>RROGA NETO:</h1></span><br>
+      <h1><span v-if="!isNaN(neto)" v-if="neto > 0" v-text="neto"></span>&euro;</h1><br />
+      <br />
+    </div>
+    <br><br>
+    <!-- <small><a href="https://sallm.in" class="linkColor" target="_blank">sallm.in</a></small> -->
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+
+<script>
+ var app = new Vue({
+    el: '#root',
+    data: {
+      bruto: "",
+      neto: "",
+    },
+    methods:
+    {
+        calculate() {
+          let kontributet1 = parseFloat(this.bruto) * (1-0.95);
+          let kontributet2 = parseFloat(this.bruto) * (1-0.95);
+          let taxedPay = parseFloat(this.bruto) * (1-0.05);
+          let difference = 0;
+
+          if(this.bruto > 0 && this.bruto < 80){
+            difference = 0;
+          }
+
+          if(this.bruto > 80 && this.bruto < 250){
+            let tax = ((-1) * (80 - taxedPay))*4/100;
+            difference = tax;
+          }
+
+          if(this.bruto > 250 && this.bruto < 450){
+            let tax = ((-1) * (250 - taxedPay))*8/100;
+            difference = tax + 6.80;
+          }
+
+          if(this.bruto > 450){
+            let tax = ((-1) * (450 - taxedPay))/10;
+            difference = tax + 6.80 + 16;
+          }
+
+          let bruto = (this.bruto - parseFloat(kontributet1) - difference).toFixed(2);
+          if(bruto > 0){
+            this.neto = bruto;
+          }
+          else {
+            this.neto = 0;
+          }
+        }
+    }
+ });
+</script>
+</body>
+</html>
